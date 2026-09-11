@@ -1,27 +1,22 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export class ProductsPage {
-
     constructor(private page: Page) {}
 
-    get shoppingCartButton() {
-        return this.page.getByRole('button', {
-            name: 'Shopping Cart'
-        });
+    get successMessage() {
+        return this.page.locator('.post-title');
     }
 
-    get addToCartButton() {
-        return this.page.getByRole('button', {
-            name: 'Add to Cart'
-        });
+    get logoutButton() {
+        return this.page.getByRole('link', { name: 'Log out' });
     }
 
-    async openCart() {
-        await this.shoppingCartButton.click();
+    async verifyLoggedIn() {
+        await expect(this.successMessage).toHaveText('Logged In Successfully');
+        await expect(this.logoutButton).toBeVisible();
     }
 
-    // Lo construiremos juntos después
-    async addProductToCart(productName: string) {
-
+    async logout() {
+        await this.logoutButton.click();
     }
 }
